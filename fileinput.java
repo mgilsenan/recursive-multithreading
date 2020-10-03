@@ -1,4 +1,3 @@
-
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.Arrays;
@@ -21,22 +20,39 @@ public class fileinput {
 			arr=new int[size];
 
 			while (myReader.hasNextInt()) {
-
-				arr[i++] = myReader.nextInt();
-
+			arr[i] = myReader.nextInt();
+			if(arr[i]<0 || arr[i]>1)
+			throw new InvalidNumberException();
+			i++;
+			}
+			if (i != size) {
+				System.out.println("not enough numbers");
+				myReader.close();
+				System.exit(1);
+				
 			}
 			myReader.close();
 
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
+		} 
+
+		catch (FileNotFoundException e) {
+			System.out.println("An error occurred. ");
 			e.printStackTrace();
 		} 
-		System.out.println(Arrays.toString(arr));
-		for(int m=0;m<arr.length;m++)
-			if(arr[m]!=0&& arr[m]!=1) {
-				System.out.println("array doesnt contains 1 or 0");
+		catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Array out of bounds ");
+			System.exit(1);
+		}
+		catch(InvalidNumberException e) {
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
 
-			}
+
+		System.out.println(Arrays.toString(arr));
+
+
+
 		return arr;
 	}
 
