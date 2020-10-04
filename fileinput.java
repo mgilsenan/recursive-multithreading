@@ -1,42 +1,39 @@
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.Arrays;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class fileinput {
 
 	public static int[] readFile(String fileName) {
-		int arr[] = null;
+		int findDefectiveArray[] = null;
 
 		try {
-			File myObj = new File(fileName);
+			File inputFile = new File(fileName);
 
-			Scanner myReader = new Scanner(myObj);
+			Scanner fileReader = new Scanner(inputFile);
 
-			int size=myReader.nextInt();
+			int fileSize = fileReader.nextInt();
 
-			int i=0;
+			int index = 0;
 
-			arr=new int[size];
+			findDefectiveArray = new int[fileSize];
 
-			while (myReader.hasNextInt()) {
-			arr[i] = myReader.nextInt();
-			if(arr[i]<0 || arr[i]>1)
-			throw new InvalidNumberException();
-			i++;
+			while (fileReader.hasNextInt()) {
+
+				findDefectiveArray[index] = fileReader.nextInt();
+
+				checkFormat(findDefectiveArray, index);
+
+				index++;
 			}
-			if (i != size) {
-				System.out.println("not enough numbers");
-				myReader.close();
-				System.exit(1);
-				
-			}
-			myReader.close();
+
+			checkFileSize(fileReader, fileSize, index);
+
+			fileReader.close();
 
 		} 
-
 		catch (FileNotFoundException e) {
-			System.out.println("An error occurred. ");
+			System.out.println("File cannot be found");
 			e.printStackTrace();
 		} 
 		catch(ArrayIndexOutOfBoundsException e) {
@@ -48,12 +45,22 @@ public class fileinput {
 			System.exit(1);
 		}
 
+		return findDefectiveArray;
+	}
 
-		System.out.println(Arrays.toString(arr));
+	private static void checkFileSize(Scanner fileReader, int fileSize, int lastIndex) {
+		if (lastIndex != fileSize) {
+			System.out.println("not enough numbers");
+			fileReader.close();
+			System.exit(1);
+			
+		}
+	}
 
-
-
-		return arr;
+	private static void checkFormat(int[] findDefectiveArray, int index) throws InvalidNumberException {
+		if(findDefectiveArray[index] < 0 || findDefectiveArray[index] > 1)
+		throw new InvalidNumberException();
+		
 	}
 
 
